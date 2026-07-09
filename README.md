@@ -55,21 +55,21 @@ use_electrodeU: true
 ### Deployed model & NequIP calculator
 After the model train is complete, the deployed model can be generated from under command (it only works with our edited NequIP code).  
 ```shell
-estorch_tmp-deploy build /your_working_dir/ /deployed_path/deploy_file_name 
+depnet-deploy build /your_working_dir/ /deployed_path/deploy_file_name 
 ```
 When you generate a deployed model that works with GPU, type under command (additional option command).
 ```shell
-estorch_tmp-deploy build /your_working_dir/ /deployed_path/deploy_file_name --device cuda
+depnet-deploy build /your_working_dir/ /deployed_path/deploy_file_name --device cuda
 ```
 However, "pair" files for [Lammps](https://www.lammps.org/#gsc.tab=0) were unprepared yet.  
 So, use the ASE calculator from NequIP, we provide the nequip_calculator example in the "util" directory.
 
 ### Resume from check-point file
 Nequip 0.3.3 version doesn't support the "resume from check-point file".
-Here, we prepared the updated file for training (estorch/scripts/train_resume-ckpt.py).
+Here, we prepared the updated file for training (depnet/scripts/train_resume-ckpt.py).
 Before installing the package, use this updated code as follows:
 ```shell
-cd estorch/scripts/
+cd depnet/scripts/
 cp train_resume-ckpt.py train.py
 ```
 Once you have overridden the original file (train.py) with the updated file (train_resume-ckpt.py), follow the installation guide.
@@ -88,7 +88,7 @@ append: false              # recommended: use a new run folder (preserves previo
 ```
 - Command (do not use "restart"!)
 ```
-estorch_tmp_train config.yaml
+depnet_train config.yaml
 ```
 
 
