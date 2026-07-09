@@ -47,55 +47,10 @@ Example configurations are provided in [NequIP](https://github.com/mir-group/neq
 There are a few additional options for this package
 ```yaml
 # in YAML file
-use_charge: true  # iff true, use total_charge and predict atomic charges
-use_ele: false  # iff true, calculate electrostatic term
-use_qeq: true  # iff true, 
-use_slab: false
-use_dipole: false               # This option set for dipole correction in QEq method. Not dipole prediction
-pbc: false  # iff true, is periodic system  
+model_builder: depnet.models.ElectrodePotentialModel  
+pbc: true  # iff true, is periodic system  
 use_electrodeU: true
 ```
-
-Training can be automatically started and restarted by using `depnet-requeue` command
-```shell
-depnet-requeue configs/minimal_requeue.yaml
-```
-
-We provide some configurations for reproducing experiments.
-- `configs/baseline/{system}_baseline.yaml`: Baseline model (NequIP) trained with 4G-HDNNP dataset
-- `configs/charge/{system}_charge.yaml`: Predict directly atomic charges and add electrostatic energy
-- `configs/qeq/{system}_qeq.yaml`: Predict atomic charges via charge equilibration scheme (Qeq) and add electrostatic energy
-
-|               | YAML files              | use_charge | use_ele | use_qeq |
-|---------------|-------------------------|------------|---------|---------|
-| Base (NequIP) | configs/baseline/*.yaml | false      | false   | false   |
-| Base w/ E_ele | configs/charge/*.yaml   | true       | true    | false   |
-| Base w/ Qeq   | configs/qeq/*.yaml      | true       | true    | true    |
-
-## How to load custom dataset
-A loaded dataset is controlled by `dataset` and `dataset_file_name` keywords in the YAML file.
-```yaml
-# Example: in configs/minimal.yaml
-dataset: depnet.datasets.fghdnnp.FGHDNNPDataset
-dataset_file_name: datasets/Carbon_chain
-```
-`dataset` keyword specifies a module for creating datasets, which inherit `torch_geometric.data.Dataset`.
-
-`dataset_file_name` keyword specifies a directory path for a raw dataset.
-When we set `dataset: depnet.datasets.fghdnnp.FGHDNNPDataset`, this directory contains JSON files for structures.
-Each JSON file has the following keys:
-```
-{
-    "pos": ...,  // (num_atoms, 3) float array, positions of atoms in cartesian coordinates
-    "symbols": ...,  // (num_atoms, ) str array, atomic species
-    "charges": ...,  // (num_atoms, ) float array, atomic charges
-    "total_energy": ...,  // float
-    "forces": ...,  // (num_atoms, 3) float array, forces acting on atoms
-    "total_charge": ...  // float
-}
-```
-
-For more details, please read [NequIP's developer tutorial](https://github.com/mir-group/nequip#developers-tutorial).
 
 ## References
 1. Tsz Wai Ko, Jonas A. Finkler, Stefan Goedecker, Jörg Behler, A fourth-generation high-dimensional neural network potential with accurate electrostatics including non-local charge transfer, [Nat. Commun. 12, 398 (2021)](https://www.nature.com/articles/s41467-020-20427-2).
