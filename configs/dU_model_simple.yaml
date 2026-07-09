@@ -1,0 +1,83 @@
+### general
+root: ./
+run_name: dU_model
+workdir: ./
+seed: 1234
+default_dtype: float32     # type of float to use, e.g. float32 and float64
+allow_tf32: true           # whether to use TensorFloat32 if it is available
+
+### resume
+requeue: true
+#append: false
+#resume_from_ckpt: "{check_point_file_path.pth}"
+#resume_strict: false
+
+### data
+dataset: ase
+#dataset_file_name: train_all.extxyz    # option 1
+use_separate_files: true                # option 2 (required below 2 lines)
+dataset_train_name: train_sep.extxyz
+dataset_valid_name: valid_sep.extxyz
+ase_args:
+  format: extxyz
+
+### network
+model_builder: depnet.models.ElectrodePotentialModel
+use_charge: false
+use_qeq: false
+use_slab: false
+use_dipole: false               # This option set for dipole correction in QEq method. Not dipole prediction
+pbc: true
+use_electrodeU: true
+r_max: 6.0
+num_layers: 5
+chemical_embedding_irreps_out: 64x0e
+feature_irreps_hidden: 64x0e + 64x1e    # without parity
+irreps_edge_sh: 0e + 1e
+conv_to_output_hidden_irreps_out: 64x0e
+nonlinearity_type: gate        # may be 'gate' or 'norm', 'gate' is recommended
+
+### radial network
+num_basis: 8
+invariant_layers: 2
+invariant_neurons: 64
+use_sc: true  # use self-connection
+linear_sc: false
+
+### logging
+wandb: false
+verbose: debug
+save_checkpoint_freq: 100    # frequency to save the intermediate checkpoint. no saving when the value is not positive.
+
+### training
+n_train: 12613
+n_val: 1402
+learning_rate: 0.001
+batch_size: 16
+max_epochs: 1000
+early_stopping_patiences:
+  Validation_loss: 2500
+  #Training_loss: 100
+  #e_mae: 100
+
+### loss function
+loss_coeffs:
+  electrode_potential: 1
+
+### metrics
+metrics_components:
+  - - electrode_potential
+    - rmse
+
+### optimizer
+optimizer_name: Adam
+optimizer_amsgrad: false
+optimizer_betas: !!python/tuple
+  - 0.9
+  - 0.999
+optimizer_eps: 1.0e-08
+optimizer_weight_decay: 0.1
+
+### lr scheduler
+lr_scheduler_name: "ExponentialLR"
+gamma: 0.999

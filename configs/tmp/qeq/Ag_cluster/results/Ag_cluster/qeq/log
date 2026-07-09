@@ -1,0 +1,89 @@
+Torch device: cpu
+* Initialization
+allow_tf32: true
+append: true
+batch_size: 5
+chemical_embedding_irreps_out: 64x0e
+compile_model: false
+conv_to_output_hidden_irreps_out: 16x0e
+dataloader_num_workers: 0
+dataset: estorch.datasets.fghdnnp.FGHDNNPDataset
+dataset_file_name: /home/jinwoong/pkg/estorch/datasets/Ag_cluster
+dataset_statistics_stride: 1
+default_dtype: float32
+e3nn_version: 0.5.1
+early_stopping: None
+early_stopping_kwargs: None
+early_stopping_patiences: '{''Validation_loss'': 2500}'
+ema_decay: 0.999
+ema_use_num_updates: true
+end_of_batch_callbacks: []
+end_of_epoch_callbacks: []
+end_of_train_callbacks: []
+equivariance_test: false
+exclude_keys: []
+feature_irreps_hidden: 32x0e + 32x1e
+final_callbacks: []
+global_rescale_scale: dataset_force_rms
+grad_anomaly_mode: false
+init_callbacks: []
+invariant_layers: 1
+invariant_neurons: 8
+irreps_edge_sh: 0e + 1o
+learning_rate: 0.01
+log_batch_freq: 1
+log_epoch_freq: 1
+loss_coeffs: '{''forces'': 100, ''charges'': 1}'
+lr_scheduler_factor: 0.8
+lr_scheduler_kwargs: None
+lr_scheduler_name: ReduceLROnPlateau
+lr_scheduler_patience: 50
+max_epochs: 10000
+metrics_components: None
+metrics_key: loss
+model_builder: estorch.models.ForceChargeModel
+model_debug_mode: false
+model_initializers: []
+n_train: 8000
+n_val: 1000
+nequip_version: 0.3.3
+num_basis: 8
+num_layers: 6
+optimizer_amsgrad: true
+optimizer_betas: !!python/tuple
+- 0.9
+- 0.999
+optimizer_eps: 1.0e-08
+optimizer_kwargs: None
+optimizer_name: Adam
+optimizer_weight_decay: 0
+pbc: false
+r_max: 4.0
+requeue: true
+restart: false
+root: results/Ag_cluster/qeq
+run_name: qeq
+save_checkpoint_freq: -1
+save_ema_checkpoint_freq: -1
+seed: 0
+shuffle: true
+start_time: Tue, 13 Aug 2024 06:44:11
+timestr: 2024-08-13_15:44:11:146167
+torch_geometric_version: 1.7.2
+torch_version: !!python/object/new:torch.torch_version.TorchVersion
+- 1.13.0+cpu
+train_idcs: None
+train_val_split: random
+use_charge: true
+use_ema: false
+use_qeq: true
+use_sc: true
+val_idcs: None
+verbose: debug
+wandb: false
+wandb_project: NequIP
+wandb_resume: false
+workdir: results/Ag_cluster/qeq
+
+Number of weights: 26425
+! Starting training ...

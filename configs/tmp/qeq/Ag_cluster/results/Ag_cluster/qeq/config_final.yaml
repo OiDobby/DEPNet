@@ -1,0 +1,75 @@
+_global_scale: 0.38851436972618103
+allow_tf32: true
+allowed_species: !!python/object/apply:torch._utils._rebuild_tensor_v2
+- !!python/object/apply:torch.storage._load_from_bytes
+  - !!binary |
+    gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAA
+    AGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAA
+    aW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApMb25nU3RvcmFn
+    ZQpxAVgJAAAAMTk3ODY5MjgwcQJYAwAAAGNwdXEDSwFOdHEEUS6AAl1xAFgJAAAAMTk3ODY5Mjgw
+    cQFhLgEAAAAAAAAALwAAAAAAAAA=
+- 0
+- !!python/tuple
+  - 1
+- !!python/tuple
+  - 1
+- false
+- !!python/object/apply:collections.OrderedDict
+  - []
+batch_size: 5
+chemical_embedding_irreps_out: 64x0e
+compile_model: false
+conv_to_output_hidden_irreps_out: 16x0e
+dataset: depnet.datasets.fghdnnp.FGHDNNPDataset
+dataset_extra_fixed_fields:
+  r_max: 4.0
+dataset_file_name: /home/jinwoong/pkg/depnet/datasets/Ag_cluster
+dataset_statistics_stride: 1
+default_dtype: float32
+early_stopping_patiences:
+  Validation_loss: 2500
+equivariance_test: false
+feature_irreps_hidden: 32x0e + 32x1e
+global_rescale_scale: dataset_force_rms
+grad_anomaly_mode: false
+invariant_layers: 1
+invariant_neurons: 8
+irreps_edge_sh: 0e + 1o
+learning_rate: 0.01
+logfile: null
+loss_coeffs:
+  charges: 1
+  forces: 100
+lr_scheduler_factor: 0.8
+lr_scheduler_name: ReduceLROnPlateau
+lr_scheduler_patience: 50
+max_epochs: 10000
+model_builder: depnet.models.ForceChargeModel
+model_debug_mode: false
+model_initializers: []
+n_train: 8000
+n_val: 1000
+num_basis: 8
+num_layers: 6
+optimizer_amsgrad: true
+optimizer_betas: !!python/tuple
+- 0.9
+- 0.999
+optimizer_eps: 1.0e-08
+optimizer_name: Adam
+optimizer_weight_decay: 0
+pbc: false
+r_max: 4.0
+requeue: true
+root: results/Ag_cluster/qeq
+run_name: qeq
+seed: 0
+timestr: 2024-08-13_15:44:11:146167
+use_charge: true
+use_qeq: true
+use_sc: true
+verbose: debug
+wandb: false
+wandb_project: NequIP
+wandb_resume: false
+workdir: results/Ag_cluster/qeq
