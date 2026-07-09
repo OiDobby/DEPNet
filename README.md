@@ -1,4 +1,4 @@
-# Charge transfer modeling with neural network potential
+# Dipole-informed Electrode Potential Network (DEPNet)
 
 ## Installation
 1. Install [PyTorch](https://pytorch.org/get-started/locally/). In this branch, the package is tested on  
@@ -25,44 +25,15 @@ pip install -U torch-scatter torch-sparse torch-geometric==1.7.2 -f https://data
 ```shell
 python -m pip install -r requirements.txt
 ```
-4. Install my nequip edit version  
-   Skip in this branch! This branch no longer depends on my nequip edit version.  
-   ~~[https://github.com/OiDobby/nequip-edit](https://github.com/OiDobby/nequip-edit)~~
-5. Install this package
+4. Install this package
 ```shell
 python -m pip install .
 ```
 
 ## Usage
 
-### Prepare 4G-HDNNP datasets [1, 2]
-Datasets are taken from 4G-HDNNPs [1, 2].
-```shell
-cd datasets
-# If you fail to download the below url, try to download `datasets.tar.gz` directly
-# from https://archive.materialscloud.org/record/2020.137
-wget "https://archive.materialscloud.org/record/file?filename=datasets.tar.gz&record_id=629"
-mv file\?filename\=datasets.tar.gz\&record_id\=629 datasets_runner.tar.gz
-tar xzvf datasets_runner.tar.gz
-python parse_datasets_runner.py 
-```
-
-Now you have the following file structure:
-```
-+
-|- datasets
-|   |- parse_datasets_runner.py
-|   |- datasets_runner.tar.gz
-|   |- datasets_runner
-|   |- Ag_cluster
-|   |   |- 0.json
-|   |   |- ...
-|   |- AuMgO
-|   |- Carbon_chain
-|   |- NaCl
--...
-```
-The units of the processed datasets are angstrom for distance, eV for total energies, eV/angstrom for forces, and elemental charge for charges.
+### Prepare datasets
+Datasets should be included the potential drop.
 
 ### Train network
 All settings for training are described with a YAML file. `depnet-train` command start to train a network.
