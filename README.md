@@ -38,7 +38,7 @@ Datasets should be included the potential drop.
 ### Train network
 All settings for training are described with a YAML file. `depnet-train` command start to train a network.
 ```shell
-depnet-train configs/minimal.yaml
+depnet-train configs/dU_model_simple.yaml
 ```
 Note that **`depnet-train` is assumed to be executed at the top of this reposity,** because a directory path for a dataset, `dataset_file_name` in the YAML file, may be relative.
 The result are stored under `root` directory specified in the YAML file.
@@ -50,7 +50,10 @@ There are a few additional options for this package
 use_charge: true  # iff true, use total_charge and predict atomic charges
 use_ele: false  # iff true, calculate electrostatic term
 use_qeq: true  # iff true, 
-pbc: false  # iff true, is periodic system
+use_slab: false
+use_dipole: false               # This option set for dipole correction in QEq method. Not dipole prediction
+pbc: false  # iff true, is periodic system  
+use_electrodeU: true
 ```
 
 Training can be automatically started and restarted by using `depnet-requeue` command
