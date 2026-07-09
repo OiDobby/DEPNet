@@ -52,6 +52,46 @@ pbc: true  # iff true, is periodic system
 use_electrodeU: true
 ```
 
+### Deployed model & NequIP calculator
+After the model train is complete, the deployed model can be generated from under command (it only works with our edited NequIP code).  
+```shell
+estorch_tmp-deploy build /your_working_dir/ /deployed_path/deploy_file_name 
+```
+When you generate a deployed model that works with GPU, type under command (additional option command).
+```shell
+estorch_tmp-deploy build /your_working_dir/ /deployed_path/deploy_file_name --device cuda
+```
+However, "pair" files for [Lammps](https://www.lammps.org/#gsc.tab=0) were unprepared yet.  
+So, use the ASE calculator from NequIP, we provide the nequip_calculator example in the "util" directory.
+
+### Resume from check-point file
+Nequip 0.3.3 version doesn't support the "resume from check-point file".
+Here, we prepared the updated file for training (estorch/scripts/train_resume-ckpt.py).
+Before installing the package, use this updated code as follows:
+```shell
+cd estorch/scripts/
+cp train_resume-ckpt.py train.py
+```
+Once you have overridden the original file (train.py) with the updated file (train_resume-ckpt.py), follow the installation guide.
+```shell
+cd ../../
+pip install .
+```
+When you need to train MLP from check point after all installations, follow our guidance.
+- Edit configure file (*.yaml)  
+Add below tags.  
+```
+resume_from_ckpt: "../ckpt300.pth"   # check point file path
+# resume_epoch: 300        # optional; if omitted, inferred from checkpoint filename
+resume_strict: false
+append: false              # recommended: use a new run folder (preserves previous logs)
+```
+- Command (do not use "restart"!)
+```
+estorch_tmp_train config.yaml
+```
+
+
 ## References
 1. Tsz Wai Ko, Jonas A. Finkler, Stefan Goedecker, Jörg Behler, A fourth-generation high-dimensional neural network potential with accurate electrostatics including non-local charge transfer, [Nat. Commun. 12, 398 (2021)](https://www.nature.com/articles/s41467-020-20427-2).
 1. https://archive.materialscloud.org/record/2020.137
