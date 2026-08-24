@@ -1,11 +1,8 @@
 # Dipole-informed Electrode Potential Network (DEPNet)
 
 ## DEPNet
-DEPNet is developed based on the original [Charge_transfer_nnp](https://github.com/pfnet-research/charge_transfer_nnp/tree/master) implementation.  
-
-While Charge_transfer_nnp was originally developed for energy, force, and charge prediction using NequIP with charge equilibration (Qeq), DEPNet extends this framework for electrode-potential prediction.  
-
-The main purpose of DEPNet is to predict the electrode potential directly from atomic structures, using only atomic positions and chemical species as input. Although the underlying code retains functionalities for energy and force prediction, these are not the primary focus of DEPNet.  
+DEPNet (Dipole-informed Electrode Potential Network) is a neural network model for predicting electrode potentials from atomic structures.  
+The model uses atomic positions and chemical species as input and predicts the electrode potential through atom-wise representations.  
 
 ## Installation
 1. Install [PyTorch](https://pytorch.org/get-started/locally/). In this branch, the package is tested on  
