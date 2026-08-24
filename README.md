@@ -97,7 +97,6 @@ depnet_train config.yaml
 
 
 ## Code base
-
 DEPNet is developed based on the original [Charge_transfer_nnp](https://github.com/pfnet-research/charge_transfer_nnp/tree/master) implementation.  
 The original code provides a NequIP-based framework with charge equilibration (Qeq). DEPNet modifies and extends this framework primarily for electrode-potential prediction.  
 
