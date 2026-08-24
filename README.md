@@ -96,6 +96,12 @@ depnet_train config.yaml
 ```
 
 
+## Code base
+
+DEPNet is developed based on the original [Charge_transfer_nnp](https://github.com/pfnet-research/charge_transfer_nnp/tree/master) implementation.  
+The original code provides a NequIP-based framework with charge equilibration (Qeq). DEPNet modifies and extends this framework primarily for electrode-potential prediction.  
+
+
 ## References
 1. Tsz Wai Ko, Jonas A. Finkler, Stefan Goedecker, Jörg Behler, A fourth-generation high-dimensional neural network potential with accurate electrostatics including non-local charge transfer, [Nat. Commun. 12, 398 (2021)](https://www.nature.com/articles/s41467-020-20427-2).
 1. https://archive.materialscloud.org/record/2020.137
