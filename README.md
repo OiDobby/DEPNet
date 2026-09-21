@@ -80,27 +80,23 @@ For the dataset used in this work, the target values were obtained from density 
 
 The electrode potential associated with a vacuum level is defined as
 
-$$
+```math
 \phi = E_F - V_{\mathrm{vac}},
-$$
+```
 
 where $E_F$ is the Fermi level and $V_{\mathrm{vac}}$ is the corresponding vacuum level.
 
 For the final DEPNet training dataset, the target was defined as the potential difference
 
-$$
-\Delta \phi
-=
-\phi_{\mathrm{ref}} - \phi_{\mathrm{vac}}.
-$$
+```math
+\Delta \phi = \phi_{\mathrm{ref}} - \phi_{\mathrm{vac}}.
+```
 
 For the slab orientation used in our calculations, $\phi_{\mathrm{vac}}$ corresponds to the upper side of the slab and $\phi_{\mathrm{ref}}$ corresponds to the lower side. Therefore,
 
-$$
-\Delta \phi
-=
-V_{\mathrm{upper}} - V_{\mathrm{lower}}.
-$$
+```math
+\Delta \phi = V_{\mathrm{upper}} - V_{\mathrm{lower}}.
+```
 
 The vacuum levels were obtained from the VASP `OUTCAR` with dipole correction enabled (`LDIPOL = .TRUE.`). VASP reports the vacuum levels on the two sides of the slab in the following form:
 
@@ -110,13 +106,9 @@ vacuum level on the upper side and lower side of the slab         2.391         
 
 For this example,
 
-$$
-\Delta \phi
-=
-2.391 - 3.796
-=
--1.405~\mathrm{eV}.
-$$
+```math
+\Delta \phi = 2.391 - 3.796 = -1.405\ \mathrm{eV}.
+```
 
 The resulting value is stored as the configuration-level property `electrode_potential` in the extxyz dataset.
 
@@ -128,29 +120,17 @@ A utility for extracting the electrode-potential target from VASP `OUTCAR` files
 util/vasp_electrode_potential_parser.py
 ```
 
-The default setting is
-
-```python
-VACUUM_LEVEL_MODE = "delta"
-```
-
-which stores
-
-$$
-V_{\mathrm{upper}} - V_{\mathrm{lower}}
-$$
-
-as `electrode_potential`.
-
-The parser also supports `upper`, `lower`, and `avg` modes. Optional Bader/Hirshfeld charge parsing and AMIX-based filtering can be enabled if needed.
-
-For standard DEPNet dataset preparation, the following settings are sufficient:
+For the final DEPNet training dataset, use:
 
 ```python
 VACUUM_LEVEL_MODE = "delta"
 USE_CHARGE = False
 USE_AMIX_FILTER = False
 ```
+
+With `VACUUM_LEVEL_MODE = "delta"`, the parser stores $V_{\mathrm{upper}} - V_{\mathrm{lower}}$ as `electrode_potential`.
+
+The parser also supports `upper`, `lower`, and `avg` modes. Bader/Hirshfeld charge parsing and AMIX-based filtering are optional and can be enabled if needed.
 
 
 ### Train network
