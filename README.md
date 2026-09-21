@@ -40,20 +40,20 @@ python -m pip install .
 
 The training dataset should be provided in the extended XYZ (`extxyz`) format.
 
-For each atomic configuration, the target electrode potential should be stored as a **configuration-level property** with the key `electrode_potential` in the comment line of the extxyz file.
+For each atomic configuration, the target electrode-potential quantity should be stored as a **configuration-level property** with the key `electrode_potential` in the comment line of the extxyz file.
 
 For example:
 
 ```text
 4
-Lattice="..." Properties=species:S:1:pos:R:3 electrode_potential=1.234 pbc="T T T"
+Lattice="..." Properties=species:S:1:pos:R:3 electrode_potential=-1.405 pbc="T T T"
 Ag  0.000  0.000  0.000
 Ag  2.500  0.000  0.000
 O   1.200  1.500  3.200
 H   1.800  1.900  3.600
 ```
 
-Here, `electrode_potential` is a scalar associated with the entire atomic configuration, rather than a per-atom property.
+Here, `electrode_potential` is a scalar associated with the entire atomic configuration rather than a per-atom property.
 
 During dataset loading, the extxyz file is read using ASE. DEPNet retrieves the target value from the `Atoms.info` dictionary:
 
@@ -72,7 +72,79 @@ loss_coeffs:
 
 is specified in the configuration file.
 
-Atomic positions and chemical species are obtained from the atomic structure itself and are used as the primary structural inputs to DEPNet.
+Atomic positions and chemical species are obtained directly from the atomic structure and are used as the primary structural inputs to DEPNet.
+
+#### Electrode-potential target
+
+For the dataset used in this work, the target values were obtained from density functional theory (DFT) calculations performed with VASP.
+
+The electrode potential associated with a vacuum level is defined as
+
+\[
+\phi = E_F - V_{\mathrm{vac}},
+\]
+
+where \(E_F\) is the Fermi level and \(V_{\mathrm{vac}}\) is the corresponding vacuum level.
+
+For the final DEPNet training dataset, the target was defined as the potential difference
+
+\[
+\Delta \phi
+=
+\phi_{\mathrm{ref}} - \phi_{\mathrm{vac}}.
+\]
+
+For the slab orientation used in our calculations, \(\phi_{\mathrm{vac}}\) corresponds to the upper side of the slab and \(\phi_{\mathrm{ref}}\) corresponds to the lower side. Therefore,
+
+\[
+\Delta \phi
+=
+V_{\mathrm{upper}} - V_{\mathrm{lower}}.
+\]
+
+The vacuum levels were obtained from the VASP `OUTCAR` with dipole correction enabled (`LDIPOL = .TRUE.`). VASP reports the vacuum levels on the two sides of the slab in the following form:
+
+```text
+vacuum level on the upper side and lower side of the slab         2.391         3.796
+```
+
+For this example,
+
+\[
+\Delta \phi
+=
+2.391 - 3.796
+=
+-1.405~\mathrm{eV}.
+\]
+
+The resulting value is stored as the configuration-level property `electrode_potential` in the extxyz dataset.
+
+#### Preparing datasets from VASP
+
+An example utility for extracting electrode-potential quantities from VASP `OUTCAR` files and converting the corresponding structures to the extxyz format is provided in:
+
+```text
+util/vasp_electrode_potential_parser.py
+```
+
+The parser supports the following vacuum-level modes:
+
+- `delta`: \(V_{\mathrm{upper}} - V_{\mathrm{lower}}\)
+- `upper`: \(E_F - V_{\mathrm{upper}}\)
+- `lower`: \(E_F - V_{\mathrm{lower}}\)
+- `avg`: \(E_F - (V_{\mathrm{upper}} + V_{\mathrm{lower}})/2\)
+
+The `delta` mode was used for the final DEPNet training dataset.
+
+Optional Bader/Hirshfeld charge parsing and AMIX-based filtering are also supported. These options are not required for electrode-potential prediction and can be disabled using:
+
+```python
+USE_CHARGE = False
+USE_AMIX_FILTER = False
+```
+
+Users employing other electronic-structure codes may prepare the same extxyz format directly, provided that the target value is stored using the `electrode_potential` key.
 
 
 ### Train network
