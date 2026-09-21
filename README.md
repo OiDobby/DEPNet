@@ -74,63 +74,63 @@ is specified in the configuration file.
 
 Atomic positions and chemical species are obtained directly from the atomic structure and are used as the primary structural inputs to DEPNet.
 
-+ Electrode-potential target
+- **Electrode-potential target**
 
-For the dataset used in this work, the target values were obtained from density functional theory (DFT) calculations performed with VASP.
+  For the dataset used in this work, the target values were obtained from density functional theory (DFT) calculations performed with VASP.
 
-The electrode potential associated with a vacuum level is defined as
+  The electrode potential associated with a vacuum level is defined as
 
-```math
-\phi = E_F - V_{\mathrm{vac}},
-```
+  ```math
+  \phi = E_F - V_{\mathrm{vac}}
+  ```
 
-where $E_F$ is the Fermi level and $V_{\mathrm{vac}}$ is the corresponding vacuum level.
+  where $E_F$ is the Fermi level and $V_{\mathrm{vac}}$ is the corresponding vacuum level.
 
-For the final DEPNet training dataset, the target was defined as the potential difference
+  For the final DEPNet training dataset, the target was defined as
 
-```math
-\Delta \phi = \phi_{\mathrm{ref}} - \phi_{\mathrm{vac}}.
-```
+  ```math
+  \Delta \phi = \phi_{\mathrm{ref}} - \phi_{\mathrm{vac}}
+  ```
 
-For the slab orientation used in our calculations, $\phi_{\mathrm{vac}}$ corresponds to the upper side of the slab and $\phi_{\mathrm{ref}}$ corresponds to the lower side. Therefore,
+  For the slab orientation used in our calculations, $\phi_{\mathrm{vac}}$ corresponds to the upper side of the slab and $\phi_{\mathrm{ref}}$ corresponds to the lower side. Therefore,
 
-```math
-\Delta \phi = V_{\mathrm{upper}} - V_{\mathrm{lower}}.
-```
+  ```math
+  \Delta \phi = V_{\mathrm{upper}} - V_{\mathrm{lower}}
+  ```
 
-The vacuum levels were obtained from the VASP `OUTCAR` with dipole correction enabled (`LDIPOL = .TRUE.`). VASP reports the vacuum levels on the two sides of the slab in the following form:
+  The vacuum levels were obtained from the VASP `OUTCAR` with dipole correction enabled (`LDIPOL = .TRUE.`).
 
-```text
-vacuum level on the upper side and lower side of the slab         2.391         3.796
-```
+  For example:
 
-For this example,
+  ```text
+  vacuum level on the upper side and lower side of the slab         2.391         3.796
+  ```
 
-```math
-\Delta \phi = 2.391 - 3.796 = -1.405\ \mathrm{eV}.
-```
+  which gives
 
-The resulting value is stored as the configuration-level property `electrode_potential` in the extxyz dataset.
+  ```math
+  \Delta \phi = 2.391 - 3.796 = -1.405\ \mathrm{eV}
+  ```
 
-#### Preparing datasets from VASP
+  The resulting value is stored as the configuration-level property `electrode_potential`.
 
-A utility for extracting the electrode-potential target from VASP `OUTCAR` files and converting the corresponding structures to the extxyz format is provided in:
+- **Preparing datasets from VASP**
 
-```text
-util/vasp_electrode_potential_parser.py
-```
+  A utility for extracting the electrode-potential target from VASP `OUTCAR` files and converting the corresponding structures to the extxyz format is provided in:
 
-For the final DEPNet training dataset, use:
+  ```text
+  util/vasp_electrode_potential_parser.py
+  ```
 
-```python
-VACUUM_LEVEL_MODE = "delta"
-USE_CHARGE = False
-USE_AMIX_FILTER = False
-```
+  For standard DEPNet dataset preparation:
 
-With `VACUUM_LEVEL_MODE = "delta"`, the parser stores $V_{\mathrm{upper}} - V_{\mathrm{lower}}$ as `electrode_potential`.
+  ```python
+  VACUUM_LEVEL_MODE = "delta"
+  USE_CHARGE = False
+  USE_AMIX_FILTER = False
+  ```
 
-The parser also supports `upper`, `lower`, and `avg` modes. Bader/Hirshfeld charge parsing and AMIX-based filtering are optional and can be enabled if needed.
+  The `delta` mode was used for the final DEPNet training dataset. The parser also supports `upper`, `lower`, and `avg` modes, while Bader/Hirshfeld charge parsing and AMIX-based filtering are optional.
 
 
 ### Train network
