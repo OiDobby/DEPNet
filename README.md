@@ -78,25 +78,11 @@ Atomic positions and chemical species are obtained directly from the atomic stru
 
   For the dataset used in this work, the target values were obtained from density functional theory (DFT) calculations performed with VASP.
 
-  The electrode potential associated with a vacuum level is defined as
+  The electrode potential associated with a vacuum level is defined as $\phi = E_F - V_{\mathrm{vac}}$, where $E_F$ is the Fermi level and $V_{\mathrm{vac}}$ is the corresponding vacuum level.
 
-  ```math
-  \phi = E_F - V_{\mathrm{vac}}
-  ```
+  For the final DEPNet training dataset, the target was defined as the potential difference $\Delta \phi = \phi_{\mathrm{ref}} - \phi_{\mathrm{vac}}$.
 
-  where $E_F$ is the Fermi level and $V_{\mathrm{vac}}$ is the corresponding vacuum level.
-
-  For the final DEPNet training dataset, the target was defined as
-
-  ```math
-  \Delta \phi = \phi_{\mathrm{ref}} - \phi_{\mathrm{vac}}
-  ```
-
-  For the slab orientation used in our calculations, $\phi_{\mathrm{vac}}$ corresponds to the upper side of the slab and $\phi_{\mathrm{ref}}$ corresponds to the lower side. Therefore,
-
-  ```math
-  \Delta \phi = V_{\mathrm{upper}} - V_{\mathrm{lower}}
-  ```
+  For the slab orientation used in our calculations, $\phi_{\mathrm{vac}}$ corresponds to the upper side of the slab and $\phi_{\mathrm{ref}}$ corresponds to the lower side. Therefore, $\Delta \phi = V_{\mathrm{upper}} - V_{\mathrm{lower}}$.
 
   The vacuum levels were obtained from the VASP `OUTCAR` with dipole correction enabled (`LDIPOL = .TRUE.`).
 
@@ -106,11 +92,7 @@ Atomic positions and chemical species are obtained directly from the atomic stru
   vacuum level on the upper side and lower side of the slab         2.391         3.796
   ```
 
-  which gives
-
-  ```math
-  \Delta \phi = 2.391 - 3.796 = -1.405\ \mathrm{eV}
-  ```
+  which gives $\Delta \phi = 2.391 - 3.796 = -1.405\ \mathrm{eV}$.
 
   The resulting value is stored as the configuration-level property `electrode_potential`.
 
@@ -122,7 +104,7 @@ Atomic positions and chemical species are obtained directly from the atomic stru
   util/vasp_electrode_potential_parser.py
   ```
 
-  For standard DEPNet dataset preparation:
+  For the final DEPNet training dataset, use:
 
   ```python
   VACUUM_LEVEL_MODE = "delta"
@@ -130,8 +112,10 @@ Atomic positions and chemical species are obtained directly from the atomic stru
   USE_AMIX_FILTER = False
   ```
 
-  The `delta` mode was used for the final DEPNet training dataset. The parser also supports `upper`, `lower`, and `avg` modes, while Bader/Hirshfeld charge parsing and AMIX-based filtering are optional.
+  The `delta` mode stores $V_{\mathrm{upper}} - V_{\mathrm{lower}}$ as `electrode_potential`.
 
+  The parser also supports `upper`, `lower`, and `avg` modes. Bader/Hirshfeld charge parsing and AMIX-based filtering are optional.
+  
 
 ### Train network
 All settings for training are described with a YAML file. `depnet-train` command start to train a network.
