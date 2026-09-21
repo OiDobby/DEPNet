@@ -37,7 +37,43 @@ python -m pip install .
 ## Usage
 
 ### Prepare datasets
-Datasets should be included the potential drop.
+
+The training dataset should be provided in the extended XYZ (`extxyz`) format.
+
+For each atomic configuration, the target electrode potential should be stored as a **configuration-level property** with the key `electrode_potential` in the comment line of the extxyz file.
+
+For example:
+
+```text
+4
+Lattice="..." Properties=species:S:1:pos:R:3 electrode_potential=1.234 pbc="T T T"
+Ag  0.000  0.000  0.000
+Ag  2.500  0.000  0.000
+O   1.200  1.500  3.200
+H   1.800  1.900  3.600
+```
+
+Here, `electrode_potential` is a scalar associated with the entire atomic configuration, rather than a per-atom property.
+
+During dataset loading, the extxyz file is read using ASE. DEPNet retrieves the target value from the `Atoms.info` dictionary:
+
+```python
+atoms.info["electrode_potential"]
+```
+
+Internally, this value is stored using the `electrode_potential` key and used as the training target when
+
+```yaml
+use_electrodeU: true
+
+loss_coeffs:
+  electrode_potential: 1
+```
+
+is specified in the configuration file.
+
+Atomic positions and chemical species are obtained from the atomic structure itself and are used as the primary structural inputs to DEPNet.
+
 
 ### Train network
 All settings for training are described with a YAML file. `depnet-train` command start to train a network.
