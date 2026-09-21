@@ -74,7 +74,7 @@ is specified in the configuration file.
 
 Atomic positions and chemical species are obtained directly from the atomic structure and are used as the primary structural inputs to DEPNet.
 
-#### Electrode-potential target
++ Electrode-potential target
 
 For the dataset used in this work, the target values were obtained from density functional theory (DFT) calculations performed with VASP.
 
