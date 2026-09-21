@@ -80,9 +80,7 @@ For the dataset used in this work, the target values were obtained from density 
 
 The electrode potential associated with a vacuum level is defined as
 
-\[
-\phi = E_F - V_{\mathrm{vac}},
-\]
+\(\phi = E_F - V_{\mathrm{vac}},\)
 
 where \(E_F\) is the Fermi level and \(V_{\mathrm{vac}}\) is the corresponding vacuum level.
 
